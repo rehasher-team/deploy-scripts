@@ -7,6 +7,8 @@ dnf update -y
 
 dnf install -y docker
 
+dnf install -y npm
+
 sudo systemctl enable docker
 
 sudo systemctl start docker
