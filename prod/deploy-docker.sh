@@ -26,10 +26,14 @@ aws ecr get-login-password --region $AWS_REGION | \
 
 docker pull $IMAGE_URI
 
-# docker rm -f rehash-backend || true
-# # 7. 포트 80 바인딩 + 컨테이너 실행 (root 권한)
-# docker run -d \
-#   --name rehash-backend \
-#   -p 80:3000 \
-#   --restart always \
-#   $IMAGE_URI
+nohup node ./health-server.js >/dev/null 2>&1 &
+
+docker rm -f rehash-backend || true
+
+# 7. 포트 80 바인딩 + 컨테이너 실행 (root 권한)
+docker run -d \
+  --name rehash-backend \
+  -p 80:3000 \
+  --restart always \
+  --env-file .env \
+  $IMAGE_URI
