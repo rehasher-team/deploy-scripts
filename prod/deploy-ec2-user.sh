@@ -8,6 +8,8 @@ yum install -y awscli
 
 SECRET_ID="prod/rehasher/ec2"
 
+HOME=/home/ec2-user
+
 cd $HOME
 
 aws secretsmanager get-secret-value \
