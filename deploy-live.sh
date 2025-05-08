@@ -32,7 +32,6 @@ docker pull $IMAGE_URI
 cd /home/ec2-user
 
 docker run -d \
-  --name rehash-backend \
   -p 80:3000 \
   --restart always \
   --env-file .env \
