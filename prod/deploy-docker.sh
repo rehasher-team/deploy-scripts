@@ -30,6 +30,10 @@ docker rm -f rehash-backend || true
 
 docker pull $IMAGE_URI
 
+npm init -y
+
+npm install @aws-sdk/client-s3
+
 nohup node ./health-server.js >/dev/null 2>&1 &
 
 cd /home/ec2-user
