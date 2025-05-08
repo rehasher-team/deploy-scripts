@@ -26,11 +26,13 @@ IMAGE_URI="$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO_NAME:$IMAGE_T
 aws ecr get-login-password --region $AWS_REGION | \
   docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
 
+docker rm -f rehash-backend || true
+
 docker pull $IMAGE_URI
 
 nohup node ./health-server.js >/dev/null 2>&1 &
 
-docker rm -f rehash-backend || true
+cd /home/ec2-user
 
 # 7. 포트 80 바인딩 + 컨테이너 실행 (root 권한)
 docker run -d \
