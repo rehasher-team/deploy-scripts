@@ -30,6 +30,8 @@ docker rm -f rehash-backend || true
 
 docker pull $IMAGE_URI
 
+chmod 755 ./redeploy.sh
+
 npm init -y
 
 npm install @aws-sdk/client-s3
