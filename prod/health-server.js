@@ -75,5 +75,7 @@ async function checkAndRedeploy() {
   }
 }
 
+checkAndRedeploy();
+
 // 10분마다 실행 (600,000ms)
 setInterval(checkAndRedeploy, 10 * 60 * 1000);
