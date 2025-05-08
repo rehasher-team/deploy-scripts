@@ -42,6 +42,7 @@ cd /home/ec2-user
 
 # 7. 포트 80 바인딩 + 컨테이너 실행 (root 권한)
 docker run -d \
+  --name "rehash-backend" \
   -p 80:8080 \
   --restart always \
   --env-file .env \
