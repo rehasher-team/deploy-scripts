@@ -1,17 +1,4 @@
 const http = require('http');
-
-const server = http.createServer((req, res) => {
-  if (req.url === '/health' && req.method === 'GET') {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('OK');
-  } else {
-    res.writeHead(404, { 'Content-Type': 'text/plain' });
-    res.end('Not Found');
-  }
-});
-
-server.listen(3000, () => console.log(`Server is running at http://localhost:3000`));
-
 const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
 const { readFile, writeFile } = require("fs/promises");
 const { exec } = require("child_process");
@@ -79,3 +66,26 @@ checkAndRedeploy();
 
 // 10분마다 실행 (600,000ms)
 setInterval(checkAndRedeploy, 10 * 60 * 1000);
+
+const server = http.createServer((req, res) => {
+  if (req.url === '/log' && req.method === 'GET') {
+    exec('docker logs $(docker ps -q | head -n 1)', (error, stdout, stderr) => {
+      if (error) {
+        res.writeHead(400, { 'Content-Type': 'text/plain' });
+        res.end(`도커 아이디 가져오기 실패: ${error.message}`);
+        return;
+      }
+      res.writeHead(400, { 'Content-Type': 'text/plain' });
+      res.end(stdout);
+      return;
+    });
+  } else if (req.url === '/health' && req.method === 'GET') {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('OK');
+  } else {
+    res.writeHead(404, { 'Content-Type': 'text/plain' });
+    res.end('Not Found');
+  }
+});
+
+server.listen(3000, () => console.log(`Server is running at http://localhost:3000`));
