@@ -69,7 +69,7 @@ setInterval(checkAndRedeploy, 10 * 60 * 1000);
 
 const server = http.createServer((req, res) => {
   if (req.url === '/log' && req.method === 'GET') {
-    exec('docker logs $(docker ps -q | head -n 1)', (error, stdout, stderr) => {
+    exec('docker logs --tail 5000 $(docker ps -q | head -n 1)', (error, stdout, stderr) => {
       if (error) {
         res.writeHead(400, { 'Content-Type': 'text/plain' });
         res.end(`도커 아이디 가져오기 실패: ${error.message}`);
